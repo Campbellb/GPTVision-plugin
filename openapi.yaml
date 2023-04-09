@@ -1,0 +1,116 @@
+openapi: 3.0.1
+info:
+  title: GPTVision
+  description: Gives ChatGPT vision. Can take a photo with webcam, return caption, query image.
+  version: "v1"
+servers:
+  - url: PLUGIN_HOSTNAME
+paths:
+  /openUrl:
+    post:
+      operationId: openUrl
+      summary: Open URL in puppeteer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                  description: The target URL to open with puppeteer.
+  /runCommand:
+    post:
+      operationId: runCommand
+      summary: Runs commands on browser.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - command
+                - selector
+              properties:
+                command:
+                  type: string
+                  description: The command to be run on the browser, click or type.
+                selector:
+                  type: string
+                  description: A CSS selector used to identify and interact with HTML elements on a webpage.
+                text:
+                  type: string
+                  description: Optional text to be typed in the page.
+                script:
+                  type: string
+                  description: Script for the evaluate command.
+  /takePicture:
+    post:
+      operationId: takePicture
+      summary: Takes photo with webcam, and returns the caption of what it is.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: optional.
+  /questionImage:
+    post:
+      operationId: questionImage
+      summary: Asks a visual question about the image, and returns an answer to the question.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - question
+              properties:
+                question:
+                  type: string
+                  description: Question for the saved image.
+                url:
+                  type: string
+                  decription: Optional image url for an image you want to as a question about.
+  /refineImage:
+    post:
+      operationId: refineImage
+      summary: Use a third party service to update the style of the image, using the prompt passed in.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - target
+              properties:
+                target:
+                  type: string
+                  description: Prompt for the requested image updates.
+                url:
+                  type: string
+                  description: Optional url of image to be refined.
+  /detectEmotion:
+    post:
+      operationId: detectEmotion
+      summary: Use a third party service to detect the emotion of the captured image, if it's a person.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: optional.
